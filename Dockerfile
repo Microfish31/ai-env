@@ -4,8 +4,9 @@ FROM nvidia/cuda:12.2.0-runtime-ubuntu22.04
 ENV PYTHONWARNINGS="ignore" \
     CONDA_DIR=/opt/conda \
     PATH=/opt/conda/bin:$PATH \
-    DEBIAN_FRONTEND=noninteractive 
-
+    DEBIAN_FRONTEND=noninteractive \
+    PIP_ROOT_USER_ACTION=ignore
+    
 # Set the working directory
 WORKDIR /workspace
 

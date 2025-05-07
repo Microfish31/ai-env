@@ -34,6 +34,7 @@ run:
 		-e EMAIL_ADDRESS=$(EMAIL_ADDRESS) \
 		-e SMTP_PASSWORD=$(SMTP_PASSWORD) \
   		-e TAILSCALE_AUTHKEY=$(TAILSCALE_AUTHKEY) \
+		--restart=always \
 		$(IMAGE_NAME):$(tag)
 
 # Stop and remove container
