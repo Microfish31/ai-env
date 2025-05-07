@@ -1,11 +1,17 @@
-FROM nvidia/cuda:12.2.0-runtime-ubuntu22.04
+ARG CUDA_VERSION=11.8.0
+ARG PYTHON_VERSION=3.12
+ARG SSH_PSW="root"
+
+FROM nvidia/cuda:${CUDA_VERSION}-runtime-ubuntu22.04
 
 # Set environment variables
 ENV PYTHONWARNINGS="ignore" \
     CONDA_DIR=/opt/conda \
     PATH=/opt/conda/bin:$PATH \
-    DEBIAN_FRONTEND=noninteractive 
-
+    DEBIAN_FRONTEND=noninteractive \
+    PIP_ROOT_USER_ACTION=ignore \
+    PIP_NO_CACHE_DIR=1
+    
 # Set the working directory
 WORKDIR /workspace
 
@@ -33,15 +39,16 @@ ENV DEBIAN_FRONTEND=dialog
 # Install Miniconda
 RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh && \
     bash /tmp/miniconda.sh -b -p $CONDA_DIR && \
-    rm /tmp/miniconda.sh
+    rm /tmp/miniconda.sh && \
+    $CONDA_DIR/bin/conda clean -afy
 
 # Create conda environment
-RUN conda create -n myenv python=3.12 -y && \
+RUN conda create -n myenv python=$PYTHON_VERSION -y && \
     echo "source $CONDA_DIR/etc/profile.d/conda.sh && conda activate myenv" >> ~/.bashrc
 
 # Set up SSH server
 RUN mkdir -p /var/run/sshd && \
-    echo 'root:root' | chpasswd && \
+    echo "root:${SSH_PSW}" | chpasswd && \
     sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config && \
     sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
 

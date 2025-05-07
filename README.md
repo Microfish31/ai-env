@@ -55,24 +55,30 @@ You should change config in makefile before running your container.
 
 ### ⚙️ Parameters
 #### Basic
-| Variable Name       | Default Value                                                     |
-| ------------------- | ----------------------------------------------------------------- |
-| `SSH_PORT`          | `2222`                                                            |
-| `JUPYTER_PORT`      | `8889`                                                            |
-| `SHM_SIZE`          | `16g`                                                             |
-| `IMAGE_NAME`        | `my-ai-env`                                                       |
-| `tag`               | `latest`                                                          |
-| `CONTAINER_NAME`    | `my-ai-container`                                                 |
-| `VOLUME_PATH`       | `/tmp/docker-container-tmp-volume`                                |
-| `WORKDIR`           | `/workspace`                                                      |
-| `GPUS`              | `all`                                                             |
+| Variable Name    | Default Value                      |
+| ---------------- | ---------------------------------- |
+| `SSH_PORT`       | `2222`                             |
+| `JUPYTER_PORT`   | `8889`                             |
+| `SHM_SIZE`       | `16g`                              |
+| `IMAGE_NAME`     | `my-ai-env`                        |
+| `TAG`            | `latest`                           |
+| `CONTAINER_NAME` | `my-ai-container`                  |
+| `VOLUME_PATH`    | `/tmp/docker-container-tmp-volume` |
+| `WORKDIR`        | `/workspace`                       |
+| `GPUS`           | `all`                              |
+| `CUDA_VERSION`   | `11.8.0`                           |
+| `PYTHON_VERSION` | `3.12`                             |
+| `ENABLE_SSH` | `false`                             |
+
+
 
 #### Personal (**must change**)
 | Variable Name       | Default Value                                                     |
 | ------------------- | ----------------------------------------------------------------- |
-| `TAILSCALE_AUTHKEY` | `"tskey-auth-xxxxxx-xxxxxxx"`                                     |
-| `SMTP_PASSWORD`     | `"xxxxx"`                                                         |
-| `EMAIL_ADDRESS`     | `"user@yahoo.com.tw"`                                             |
+| `SSH_PASSWORD` | `"root"`                                     |
+| `TAILSCALE_AUTHKEY` | `""`                                     |
+| `SMTP_PASSWORD`     | `""`                                                         |
+| `EMAIL_ADDRESS`     | `""`                                             |
 
 ### 🧾 Command
 * Build Image
