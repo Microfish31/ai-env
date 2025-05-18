@@ -8,6 +8,11 @@ conda activate myenv
 # Start SSH service
 if [ "$ENABLE_SSH" = "true" ]; then
     echo "Starting SSH service..."
+    # Set up SSH server
+    mkdir -p /var/run/sshd
+    echo "root:${SSH_PSW}" | chpasswd
+    sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+    sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
     service ssh start
 fi
 

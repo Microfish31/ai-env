@@ -10,8 +10,8 @@ CONTAINER_NAME ?= my-ai-container
 VOLUME_PATH ?= /tmp/docker-container-tmp-volume
 WORKDIR ?= /workspace
 GPUS?=all
-CUDA_VERSION?="11.8.0"
-PYTHON_VERSION?="3.12"
+CUDA_VERSION?=11.8.0
+PYTHON_VERSION?=3.12.0
 ENABLE_SSH?=false
 
 # Optional variables
@@ -20,19 +20,19 @@ TAILSCALE_AUTHKEY?=""
 SMTP_PASSWORD?=""
 EMAIL_ADDRESS?=""
 
-.PHONY: build run stop remove
+.PHONY: default build run stop remove
+default: build
 
 # Build Docker image
 build:
+	@echo "Building Docker image..."
+	sudo mkdir -p $(VOLUME_PATH)
 	docker build . -t $(IMAGE_NAME) \
 	--build-arg CUDA_VERSION=$(CUDA_VERSION) \
-	--build-arg PYTHON_VERSION=$(PYTHON_VERSION) \
-	--build-arg SSH_PSW=$(SSH_PASSWORD) \
+	--build-arg PYTHON_VERSION=$(PYTHON_VERSION)
 
 # Run Docker container
 run:
-	sudo mkdir -p $(VOLUME_PATH)
-	make build
 	docker run -itd \
 		--name $(CONTAINER_NAME) \
 		--gpus $(GPUS) \
@@ -45,6 +45,7 @@ run:
   		-e TAILSCALE_AUTHKEY=$(TAILSCALE_AUTHKEY) \
 		-e HOSTNAME=$(CONTAINER_NAME) \
 		-e ENABLE_SSH=$(ENABLE_SSH) \
+		-e SSH_PSW=$(SSH_PASSWORD) \
 		--restart=always \
 		$(IMAGE_NAME):$(tag)
 

@@ -1,6 +1,5 @@
 ARG CUDA_VERSION=11.8.0
-ARG PYTHON_VERSION=3.12
-ARG SSH_PSW="root"
+ARG PYTHON_VERSION=3.12.0
 
 FROM nvidia/cuda:${CUDA_VERSION}-runtime-ubuntu22.04
 
@@ -43,14 +42,8 @@ RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -
     $CONDA_DIR/bin/conda clean -afy
 
 # Create conda environment
-RUN conda create -n myenv python=$PYTHON_VERSION -y && \
+RUN conda create -n myenv python=${PYTHON_VERSION} -y && \
     echo "source $CONDA_DIR/etc/profile.d/conda.sh && conda activate myenv" >> ~/.bashrc
-
-# Set up SSH server
-RUN mkdir -p /var/run/sshd && \
-    echo "root:${SSH_PSW}" | chpasswd && \
-    sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config && \
-    sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
 
 # Install Application
 RUN curl -fsSL https://tailscale.com/install.sh | sh && \
